@@ -48,20 +48,20 @@ extension UIImageView{
         self.isHidden = true
         DownloadManager.Instance().Load(url: url,completion: {(data,response,error) in
 
-            if let data = data{
-                self.image = UIImage(data:data,scale:1.0)
-                self.isHidden = false
-            }else{
-                print("message:\(error)")
-                guard let image = UIImage(named: defaultImg) else{
-                    self.isHidden = true
-                    return
-                }
-                DispatchQueue.main.async() {
+            DispatchQueue.main.async() {
+                if let data = data{
+                    self.image = UIImage(data:data,scale:1.0)
+                    self.isHidden = false
+                }else{
+                    print("message:\(error)")
+                    guard let image = UIImage(named: defaultImg) else{
+                        self.isHidden = true
+                        return
+                    }
                     self.image = image
                     self.isHidden = false
+                    return
                 }
-                return
             }
         })
     }
